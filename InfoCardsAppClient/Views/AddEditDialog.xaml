@@ -1,0 +1,45 @@
+﻿<Window x:Class="InfoCardsAppClient.AddEditDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InfoCardsAppClient"
+        mc:Ignorable="d"
+        Title="Добавить/Редактировать" Height="358.898" Width="500" ResizeMode="NoResize">
+    <Window.Resources>
+        <local:ByteArrayImageConverter x:Key="ByteArrayImageConverter"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50px"/>
+            <RowDefinition Height="230px"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130px"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Название" HorizontalAlignment="left" VerticalAlignment="Center" Height="35" Width="80" FontSize="16"/>
+            <TextBox Grid.Column="1" Text="{Binding EditCard.CardName, Mode=OneWay}" x:Name="nameTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Margin="5" VerticalAlignment="Center" Width="350px" FontSize="16"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130px"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Изображение" HorizontalAlignment="Left" VerticalAlignment="Center" Height="35" Width="120" FontSize="16"/>
+            <Image Grid.Column="1" Source ="{Binding EditCard.Image, Converter={StaticResource ByteArrayImageConverter}}" x:Name="cardImage" HorizontalAlignment="Left" Height="210px" Margin="10" VerticalAlignment="Top" Width="345px"/>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="1.30*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="OKBtn" Click="OKBtn_Click" Grid.Column="0" Content="OK" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="75" Height="25px" FontSize="16"/>
+            <Button Grid.Column="1" Command="{Binding LoadImageCommand}" Content="Выбрать изображение" HorizontalAlignment="Center" Margin="5" VerticalAlignment="Top" Width="180px" Height="25px" FontSize="16"/>
+            <Button Grid.Column="2" Content="Отмена" IsCancel="True" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top" Width="75" Height="25px" FontSize="16"/>
+        </Grid>
+    </Grid>
+</Window>

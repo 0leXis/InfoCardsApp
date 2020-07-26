@@ -1,0 +1,80 @@
+﻿<Window x:Class="InfoCardsAppClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InfoCardsAppClient"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="720" Width="1280" MinWidth="820" MinHeight="300">
+    <Window.Resources>
+        <local:ByteArrayImageConverter x:Key="ByteArrayImageConverter"/>
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+    <Canvas Name="mainCanvas">
+        <Grid Width="{Binding ElementName=mainCanvas, Path=ActualWidth}" Height="{Binding ElementName=mainCanvas, Path=ActualHeight}">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="60px"></RowDefinition>
+            </Grid.RowDefinitions>
+            <ListView Name="cardsList" Grid.Row="0" FontSize="16" ItemsSource="{Binding InfoCards}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="50px" DisplayMemberBinding="{Binding Path=CardId}">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Content="Id" Click="cardsListHeader_Click" CommandParameter="CardId" Padding="5,0,0,0" HorizontalContentAlignment="Left"/>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn Width="200px" DisplayMemberBinding="{Binding Path=CardName}">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Content="Название" Click="cardsListHeader_Click" CommandParameter="CardName" Padding="5,0,0,0" HorizontalContentAlignment="Left"/>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn Width="200px" Header="Изображение">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding Path=Image, Converter={StaticResource ByteArrayImageConverter}}"></Image>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="130px" Header="Редактировать">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Name="editBtn" Click="editBtn_Click" CommandParameter="{Binding}" Content="Редактировать" FontSize="16"></Button>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="80px" Header="Удалить">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Удалить" Command="{Binding DataContext.RemoveDataCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" CommandParameter="{Binding Path=CardId}" FontSize="16"></Button>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="160px"></ColumnDefinition>
+                    <ColumnDefinition Width="170px"></ColumnDefinition>
+                    <ColumnDefinition Width="170px"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Name="updateBtn" Command="{Binding UpdateCommand}" Grid.Column="0" Content="Обновить список" FontSize="16" Width="150px" Height="30px"/>
+                <Button Name="addBtn" Click="addBtn_Click" Grid.Column="1" Content="Добавить карточку" FontSize="16" Width="160px" Height="30px"/>
+                <Button Name="deleteManyBtn" Click="deleteManyBtn_Click" Grid.Column="2" Content="Удалить выбранные" FontSize="16" Width="160px" Height="30px"/>
+                <Grid Grid.Column="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Content="Нажмите на заголовок для сортировки" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+                    <Label Grid.Row="1" Content="Чтобы удалить несколько элементов, выделите их с помощью ЛКМ + CTRL" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid Panel.ZIndex="1" Visibility="{Binding WaitWebResponse, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#7FD8D8D8" Width="{Binding ElementName=mainCanvas, Path=ActualWidth}" Height="{Binding ElementName=mainCanvas, Path=ActualHeight}">
+            <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Запрос выполняется, пожалуйста подождите..." FontSize="16"></Label>
+        </Grid>
+    </Canvas>
+</Window>
